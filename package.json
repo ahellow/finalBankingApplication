@@ -1,0 +1,23 @@
+{
+  "name": "banking_exercises",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seaport": "./node_modules/.bin/seaport",
+    "start": "./run.sh"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "chalk": "^4.1.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "http-proxy": "^1.18.1",
+    "mongoose": "^5.10.10",
+    "nodemon": "^2.0.6",
+    "seaport": "^2.0.9"
+  }
+}
