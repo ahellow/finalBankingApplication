@@ -1,12 +1,9 @@
 const express = require('express');
 const app = express();
-const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
-const ejs = require('ejs');
-var http = require('http')
 var seaport = require('seaport')
 const ports = seaport.connect('localhost', 9090);
 
@@ -16,10 +13,11 @@ const ports = seaport.connect('localhost', 9090);
 app.use(bodyParser.json());
 
 //Import Routes
-const accountRoute = require('./routes/accounts');
+const AccountRoute = require('./controllers/accounts');
+const ClientRoute = require('./controllers/clients')
 const db = require('./db');
-app.use('/accounts', accountRoute)
-
+app.use('/accounts', AccountRoute)
+app.use('/clients', ClientRoute)
 
 /*
 //get id 

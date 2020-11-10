@@ -51,6 +51,7 @@ const getConnection = async () => {
 
         connection = await mongoose.connect('mongodb+srv://dbManager:Z9Q8AWu6tX5pH4Q6@cluster0.eu2r7.mongodb.net/bankingDb?authSource=admin&replicaSet=atlas-elolcr-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
             useNewUrlParser: true,
+            useUnifiedTopology: true,
             useCreateIndex: true,
         });
     }

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../db');
 const Account = require('../models/account');
 
 // curl localhost/accounts
@@ -18,21 +19,17 @@ router.get('/', async (req, res) => {
 //endpoint to add user 
 router.post("/", async (req, res) => {
     try {
-      const { firstname, lastname, balance, branch, accountType } = req.body;
+      const { client_id, balance, alias } = req.body;
       db.getConnection().then(async () => {
         const user = new Account({
           //enter correct fields
-          firstname,
-          lastname,
+          client_id,
           balance,
-          branch,
-          accountType,
+          alias
         });
 
-        const message = 'Data recieved, updating user...'
-
         user.save();
-        res.json(user, message);
+        return res.status(201).send(user);
       });
     } catch (err) {
       console.log(`err: ${err}`);
@@ -43,7 +40,7 @@ router.post("/", async (req, res) => {
 // Implement a new endpoint, that will be able to return a specific account by id.
 //returns a certain account by id
 router.get('/:id', async (req, res) => {
-  const id = req.query.params.id;
+  const id = req.params.id;
   if(!id){
     return res.status(401).json({message: "No id provided"})
   }
@@ -61,7 +58,7 @@ router.get('/:id', async (req, res) => {
 router.get('/:id/balance', async (req, res) => {
     try {
         const account = await Account.findById(req.params.id);
-        res.send(`Hey ${account.firstname} ;) The balance of your account is: ${account.balance}Dkk`);
+        return res.send(`Hey ${account.firstname} ;) The balance of your account is: ${account.balance}Dkk`);
     }
     catch (err) {
         console.log({ message: err });
@@ -70,21 +67,23 @@ router.get('/:id/balance', async (req, res) => {
 });
 
 
-//the endpoint to delete a user.
+
+//the endpoint to delete an account.
 router.delete('/:id', async (req, res) => {
     try {
         const account = await Account.findByIdAndRemove({
-            _id: req.params.id
+            Id: req.params.id
         });
         res.send(account)
 
     } catch (error) {
-        res.send(500)
+      console.log(error);
+      return res.sendStatus(500)  
     }
   })
 
   //the endpoint for depositing to account 
-  router.post("/:id/deposit", async (req, res) => {
+  router.put("/:id/deposit", async (req, res) => {
     try {
       db.getConnection().then(async () => {
         const { deposit } = req.body;
@@ -95,17 +94,17 @@ router.delete('/:id', async (req, res) => {
             user.save();
             return res.send("Amount deposited  successfully");
           } else {
-            return res.send("please provide deposit amount");
+            return res.send("Please provide deposit amount");
           }
         });
       });
     } catch (err) {
-      console.log({ message: err });
+      console.log({ message: err , message : 'Something went wrong'});
     }
   });
 
   //the endpoint for withdrawing
-  router.post("/:id/withdraw", async (req, res) => {
+  router.put("/:id/withdraw", async (req, res) => {
     try {
       db.getConnection().then(async () => {
         const { withdraw } = req.body;
@@ -128,16 +127,16 @@ router.delete('/:id', async (req, res) => {
   //This is the endpoint for transferring money from one account to another
 // Transfer money from one account to another.
 
-router.post("/transaction/:senderId", async (req, res) => {
+router.post("/transfer/:senderId", async (req, res) => {
     try {
       db.getConnection().then(async () => {
-        const { amount, receiptId } = req.body;
+        const { amount, receipientId } = req.body;
         await Account.findById(
           { _id: req.params.senderId },
           async (err, user) => {
             if (err) console.log(err);
             else
-              await Account.findById({ _id: receiptId }, (err, receipt) => {
+              await Account.findById({ _id: receipientId }, (err, receipt) => {
                 if (err) console.log(err);
                 else if (user.balance >= Number(amount)) {
                   user.balance -= Number(amount);

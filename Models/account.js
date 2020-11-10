@@ -1,18 +1,15 @@
-const mongoose = require('mongoose');
+const { ObjectID, ObjectId } = require('mongodb');
+const mongoose  = require('mongoose');
+const Schema = mongoose.Schema;
+const ClientModel = require('./client');
 
 // 3. Finish the account schema
 const AccountSchema = new mongoose.Schema({
-
-    firstname :{
-        type: String,
-        unique : false,
-        required : true
-    },
-
-    lastname :{
-        type: String,
-        unique: false,
-        required: false
+    
+    client_id : {
+        type: Schema.Types.ObjectId,
+        ref: 'Client',
+        required: true,
     },
 
     balance : {
@@ -20,18 +17,13 @@ const AccountSchema = new mongoose.Schema({
         unique : false,
         required : false
     },
-
-    branch : {
+    
+    alias : {
         type: String,
         unique: false,
         required: false,
     },
 
-    accountType : {
-        type: String,
-        unique: false,
-        required: false,
-    }
 
 });
 
@@ -50,7 +42,7 @@ const AccountSchema = new mongoose.Schema({
      */
 
 
-//defines account
-const AccountModel = mongoose.model('accounts', AccountSchema);
+//defines Account
+const AccountModel = mongoose.model('Account', AccountSchema);
 
 module.exports = AccountModel;
