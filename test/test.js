@@ -4,15 +4,15 @@ const Account = require("../models/account");
 const fetch = require("node-fetch");
 const chai = require("chai");
 const should = chai.should();
-const config = require("../config/index.js");
+//const config = require("../config/index.js");
 // const expect = require('chai').expect;
 const chaiHttp = require("chai-http");
 const { expect } = require("chai");
 chai.use(chaiHttp);
-const baseUrl = "https://localhost:8080"
+const baseUrl = "https://localhost:8080"  
 
 // connecto to db
-let connection = mongoose.connect(config.databaseURL, {
+let connection = mongoose.connect("mongodb+srv://dbManager:Z9Q8AWu6tX5pH4Q6@cluster0.eu2r7.mongodb.net/bankingDb?authSource=admin&replicaSet=atlas-elolcr-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true", {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -94,7 +94,7 @@ describe("Client tests", () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a("array");
-          res.body.length.should.be.eql(clientsLength + 2);
+          res.body.length.should.be.eql(clientsLength + 1);
           done();
         });
     });

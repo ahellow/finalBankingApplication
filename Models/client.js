@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 // 3. Finish the account schema
 const ClientSchema = new mongoose.Schema({
-
+    
     firstname :{
         type: String,
         unique : false,
@@ -13,20 +13,20 @@ const ClientSchema = new mongoose.Schema({
     lastname :{
         type: String,
         unique: false,
-        required: false
+        required: true
     },
 
 
     streetAddress : {
         type: String,
         unique: false,
-        required: true,
+        required: true
     },
 
     city : {
         type: String,
         unique: false,
-        required: true,
+        required: true
     }
 
 });

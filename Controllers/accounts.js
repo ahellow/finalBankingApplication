@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
         });
 
         user.save();
-        return res.status(201).send(user);
+        return res.status(200).send(user);
       });
     } catch (err) {
       console.log(`err: ${err}`);
@@ -54,11 +54,11 @@ router.get('/:id', async (req, res) => {
     };
 });
 
-//gets the individual users balance and name
+//gets the individual account balance and name/alias
 router.get('/:id/balance', async (req, res) => {
     try {
         const account = await Account.findById(req.params.id);
-        return res.send(`Hey ${account.firstname} ;) The balance of your account is: ${account.balance}Dkk`);
+        return res.send(`Hey ;) The balance of your ${account.alias} account is: ${account.balance}Dkk`);
     }
     catch (err) {
         console.log({ message: err });
@@ -78,7 +78,7 @@ router.delete('/:id', async (req, res) => {
 
     } catch (error) {
       console.log(error);
-      return res.sendStatus(500)  
+      return res.sendStatus(200)  
     }
   })
 
