@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { update } = require('../models/account');
 const Account = require('../models/account');
 
 // curl localhost/accounts
-//Endpoint for all users
+//Endpoint for showing all users
 router.get('/', async (req, res) => {
     try {
         // 1. return accounts from database instead
@@ -40,7 +41,9 @@ router.post("/", async (req, res) => {
 // Implement a new endpoint, that will be able to return a specific account by id.
 //returns a certain account by id
 router.get('/:id', async (req, res) => {
+
   const id = req.params.id;
+
   if(!id){
     return res.status(401).json({message: "No id provided"})
   }
@@ -54,10 +57,13 @@ router.get('/:id', async (req, res) => {
     };
 });
 
+
 //gets the individual account balance and name/alias
 router.get('/:id/balance', async (req, res) => {
+  const id = req.params.id
+
     try {
-        const account = await Account.findById(req.params.id);
+        const account = await Account.findById(id);
         return res.send(`Hey ;) The balance of your ${account.alias} account is: ${account.balance}Dkk`);
     }
     catch (err) {
@@ -72,7 +78,7 @@ router.get('/:id/balance', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const account = await Account.findByIdAndRemove({
-            Id: req.params.id
+            _id: req.params.id
         });
         res.send(account)
 
@@ -82,8 +88,69 @@ router.delete('/:id', async (req, res) => {
     }
   })
 
+    //This is the endpoint for transferring money from one account to another
+// Transfer money from one account to another.
+
+router.put("/transfer", async (req, res) => {
+  try {
+    db.getConnection().then(async () => {
+      const {fromAccount, toAccount, amount} = req.body;
+      await Account.findById(
+       fromAccount,
+        async (err, user) => {
+          if (err) console.log(err);
+          else
+            await Account.findById(toAccount, (err, recepient) => {
+              if (err) console.log(err);
+              else if (user.balance >= Number(amount)) {
+                user.balance -= Number(amount);
+                user.save();
+                recepient.balance += Number(amount);
+                recepient.save();
+                return res.send("transaction completed successfully");
+              } else {
+                return res.send("Something went wrong");
+              }
+            });
+        }
+      );
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+//updates the balance 
+router.put("/:id", async (req, res) => {
+  
+
+
+  try {
+    db.getConnection().then(async () => {
+      const currentAccount = req.body;
+       await Account.findByIdAndUpdate( 
+         req.params.id,
+        currentAccount,
+      
+      {
+        new: true,
+        useFindAndModify: false,
+      });
+   res.status(200).send(currentAccount);
+   //console.log('balance updated succesfully');
+   return
+
+  });
+    
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+
   //the endpoint for depositing to account 
-  router.put("/:id/deposit", async (req, res) => {
+  router.put("/:id", async (req, res) => {
     try {
       db.getConnection().then(async () => {
         const { deposit } = req.body;
@@ -104,7 +171,7 @@ router.delete('/:id', async (req, res) => {
   });
 
   //the endpoint for withdrawing
-  router.put("/:id/withdraw", async (req, res) => {
+  router.put("/:id", async (req, res) => {
     try {
       db.getConnection().then(async () => {
         const { withdraw } = req.body;
@@ -123,38 +190,10 @@ router.delete('/:id', async (req, res) => {
       console.log({ message: err });
     }
   });
- 
-  //This is the endpoint for transferring money from one account to another
-// Transfer money from one account to another.
 
-router.post("/transfer/:senderId", async (req, res) => {
-    try {
-      db.getConnection().then(async () => {
-        const { amount, receipientId } = req.body;
-        await Account.findById(
-          { _id: req.params.senderId },
-          async (err, user) => {
-            if (err) console.log(err);
-            else
-              await Account.findById({ _id: receipientId }, (err, receipt) => {
-                if (err) console.log(err);
-                else if (user.balance >= Number(amount)) {
-                  user.balance -= Number(amount);
-                  user.save();
-                  receipt.balance += Number(amount);
-                  receipt.save();
-                  return res.send("transaction completed successfully");
-                } else {
-                  return res.send("Balance is low");
-                }
-              });
-          }
-        );
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  });
-  
+
+
+ 
+
 
 module.exports = router;
