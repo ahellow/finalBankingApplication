@@ -107,7 +107,7 @@ router.put("/transfer", async (req, res) => {
                 user.save();
                 recepient.balance += Number(amount);
                 recepient.save();
-                return res.send("transaction completed successfully");
+                return res.send("transaction completed successfully" );
               } else {
                 return res.send("Something went wrong");
               }

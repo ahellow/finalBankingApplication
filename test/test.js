@@ -62,7 +62,7 @@ describe("Client tests", () => {
         });
     });
   });
-  describe("/POST clients", () => {
+  describe("/POST clients1", () => {
     it("it should POST client 1", (done) => {
       chai
         .request(baseUrl)
@@ -74,6 +74,8 @@ describe("Client tests", () => {
           done();
         });
     });
+  });
+  describe("/POST clients2", () => {
     it("it should POST client 2", (done) => {
       chai
         .request(baseUrl)
@@ -94,7 +96,7 @@ describe("Client tests", () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a("array");
-          res.body.length.should.be.eql(clientsLength + 1);
+          res.body.length.should.be.eql(clientsLength + 2);
           done();
         });
     });
@@ -221,6 +223,8 @@ describe("Account tests", () => {
           done();
         });
     });
+  })
+  describe("/POST accounts2", () => {
     it("it should POST account 2", (done) => {
       let account = accountTemplate();
       account.client_id = client._id;
