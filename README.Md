@@ -26,9 +26,11 @@ To run the test script:
 npm run test
 ```
 
-## Error
+To access the banking application from your browser: 
+https://localhost:8080
+ 
+The load balancer will assign you a vacant server.
 
-Some runtime errors may occur when running the test script. This occurs due to the MongoDb atlas connaction, which can cause an error when running the test script.
 
 ## Github
 
