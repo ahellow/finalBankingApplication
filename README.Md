@@ -5,7 +5,8 @@ It was made for the purpose of handling a bankingtellers general administrative 
 
 ## Installation
 
-Use the package manager to install dependencies. See the package.json file under "dependencies".
+Use the package manager to install the relevant dependencies. 
+See the package.json file under "dependencies".
 
 ```bash
 npm install someDependencies
