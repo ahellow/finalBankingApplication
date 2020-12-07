@@ -10,6 +10,7 @@ const AccountSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'Client',
         required: true,
+        immutable: true
     },
 
     balance : {

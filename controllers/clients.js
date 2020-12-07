@@ -11,7 +11,6 @@ router.post("/", async (req, res) => {
       const { firstname, lastname, streetAddress, city } = req.body;
       db.getConnection().then(async () => {
         const client = new Client({
-          //enter correct fields
           firstname,
           lastname,
           streetAddress,

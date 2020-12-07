@@ -14,7 +14,7 @@ var error = chalk.bold.yellow;
 var disconnected = chalk.bold.red;
 var termination = chalk.bold.magenta;
 
-//export this function and imported by server.js
+//export this function and imported by app.js
 module.exports = function() {
 
     mongoose.connect("mongodb+srv://dbManager:Z9Q8AWu6tX5pH4Q6@cluster0.eu2r7.mongodb.net/bankingDb?authSource=admin&replicaSet=atlas-elolcr-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true");
@@ -53,6 +53,7 @@ const getConnection = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true,
+            useFindAndModify: false
         });
     }
     return connection;

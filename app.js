@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
-var seaport = require('seaport')
+    const seaport = require('seaport')
 const ports = seaport.connect('localhost', 9090);
 
 

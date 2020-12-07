@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 });
 
 // use postman or curl -d data=example1&data2=example2 http://URL/example.cgi
-//endpoint to add user 
+//endpoint to add acc
 router.post("/", async (req, res) => {
     try {
       const { client_id, balance, alias } = req.body;
@@ -97,14 +97,15 @@ router.put("/transfer", async (req, res) => {
       const {fromAccount, toAccount, amount} = req.body;
       await Account.findById(
        fromAccount,
-        async (err, user) => {
+        async (err, account) => {
           if (err) console.log(err);
           else
             await Account.findById(toAccount, (err, recepient) => {
               if (err) console.log(err);
-              else if (user.balance >= Number(amount)) {
-                user.balance -= Number(amount);
-                user.save();
+              else if (account.balance >= Number(amount)) {
+                account.balance -= Number(amount);
+                account.save();
+                console.log(recepient)
                 recepient.balance += Number(amount);
                 recepient.save();
                 return res.send("transaction completed successfully" );
@@ -122,16 +123,12 @@ router.put("/transfer", async (req, res) => {
 
 //updates the balance 
 router.put("/:id", async (req, res) => {
-  
-
-
   try {
     db.getConnection().then(async () => {
       const currentAccount = req.body;
        await Account.findByIdAndUpdate( 
          req.params.id,
         currentAccount,
-      
       {
         new: true,
         useFindAndModify: false,

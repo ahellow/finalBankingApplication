@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --timeout 10000 --exit",
+    "test": "./node_modules/.bin/mocha --timeout 10000 --exit --no-warnings ",
     "seaport": "./node_modules/.bin/seaport",
     "start": "./run.sh",
     "quest": "npm run seaport listen 9090 &  nodemon app.js & nodemon app.js & nodemon app.js & nodemon load-balancer.js"

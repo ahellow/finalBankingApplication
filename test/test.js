@@ -11,7 +11,7 @@ const { expect } = require("chai");
 chai.use(chaiHttp);
 const baseUrl = "https://localhost:8080"  
 
-// connecto to db
+// connect to to db
 let connection = mongoose.connect("mongodb+srv://dbManager:Z9Q8AWu6tX5pH4Q6@cluster0.eu2r7.mongodb.net/bankingDb?authSource=admin&replicaSet=atlas-elolcr-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true", {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -160,7 +160,7 @@ describe("Client tests", () => {
         .get("/clients")
         .end(async (err, res) => {
           res.should.have.status(200);
-          const id = res.body[res.body.length - 1]._id;
+          const id = res.body[res.body.length - 2]._id;
           chai
             .request(baseUrl)
             .delete(`/clients/${id}`)
