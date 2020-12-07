@@ -9,7 +9,7 @@ Use the package manager to install the relevant dependencies.
 See the package.json file under "dependencies".
 
 ```bash
-npm install someDependencies
+npm install *someDependencies*
 ```
 
 ## Usage
@@ -26,8 +26,9 @@ To run the test script:
 npm run test
 ```
 
-To access the banking application from your browser: 
-https://localhost:8080
+To access the banking application from your browser, go to: 
+
+[https://localhost:8080] 
  
 The load balancer will assign you a vacant server.
 
